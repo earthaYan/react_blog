@@ -1,0 +1,15 @@
+.login-wrapper{
+    width: 400px;
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+.input{
+    margin-bottom: 20px;
+}
+body{
+    background: url('../img/login_bg.jpg');
+    background-size: cover;
+}
