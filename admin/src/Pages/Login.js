@@ -14,9 +14,7 @@ function Login(){
     const [isLoading,setIsLoading] = useState(false)
     const checkLogin=()=>{
         setIsLoading(true)
-        setTimeout(() => {
-            setIsLoading(false)
-        },1000);
+        
     }
     return (
         <div className="login-wrapper">

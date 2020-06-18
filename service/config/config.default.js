@@ -17,12 +17,20 @@ module.exports = appInfo => {
 
   // add your middleware config here
   config.middleware = [];
+  config.mysql={
+    client:{
+      host:'localhost',
+      port:'3306',
+      user:'root',
+      password:'123456',
+      database:'react_blog'
+    }
 
+  }
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
   };
-
   return {
     ...config,
     ...userConfig,

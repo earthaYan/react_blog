@@ -2,8 +2,8 @@
 
 /**
  * @param {Egg.Application} app - egg application
+ * 拆分路由
  */
 module.exports = app => {
-  const { router, controller } = app;
-  router.get('/', controller.home.index);
+  require('./router/admin')(app)
 };
