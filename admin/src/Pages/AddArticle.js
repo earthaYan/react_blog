@@ -5,10 +5,21 @@ import {Row,Col,Input,Select,Button,DatePicker} from 'antd'
 const {Option}=Select
 const {TextArea}=Input
 function AddArticle(){
+    // 0是新增加，非0是修改
+    const [articleId,setArticleId]=useState(0)
+    const [articleTitle,setArticleTitle]=useState('')
+    // 文章
     const [articleContent,setArticleContent]=useState('')
     const [showHtml,setShowHtml]=useState('预览内容')
+    // 简介
     const [introduce,setIntroduce]=useState('')
     const [introduceHtml,setIntroduceHtml]=useState('简介内容')
+    // 日期
+    const [createDate,setCreateDate]=useState()
+    const [updateDate,setUpdateDate]=useState()
+    // 文章类别
+    const [typeInfo,setTypeInfo]=useState()
+    const [selectedType,setSelectedType]=useState()
     marked.setOptions({
         renderer:new marked.Renderer(),
         // github标准的markdown
@@ -35,8 +46,6 @@ function AddArticle(){
             setIntroduce(e.target.value)
             setIntroduceHtml(html)
         }
-        
-       
     }
     return(
         <div className="add-wrapper">
