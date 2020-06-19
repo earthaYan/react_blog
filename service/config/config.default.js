@@ -17,6 +17,10 @@ module.exports = appInfo => {
   config.security={
     csrf:{enable:false}
   }
+  config.cors={
+    origin:'*',
+    allowMethods:"GET,HEAD,PUT,POST,DELETE,PATCH"
+  }
   // add your middleware config here
   config.middleware = [];
   config.mysql={
@@ -27,6 +31,9 @@ module.exports = appInfo => {
       password:'123456',
       database:'react_blog'
     }
+  }
+  config.bodyParser={
+    
   }
   // add your user config here
   const userConfig = {

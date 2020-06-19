@@ -15,19 +15,20 @@ function Login(){
     const [password,setPassword] =useState('')
     const [isLoading,setIsLoading] = useState(false)
     const checkLogin=()=>{
-        setIsLoading(true)
+        // setIsLoading(true)
         if(!userName||!password){
             return false
         }   
         axios.post(pub.callApi().checkLogin,{
-            userName,
-            password
-        }).then(res=>{
+            "userName":"颜",
+            "password":"12344"
+        })
+        .then(res=>{
             setIsLoading(false)
             console.log(res)
         }).catch(e=>{
             setIsLoading(false)
-            console.log(e.message)
+            console.log(e)
         })
     }
     return (
