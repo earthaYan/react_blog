@@ -1,4 +1,6 @@
 import  React,{useState} from 'react'
+import pub from '../config/pub'
+import axios from 'axios'
 import 'antd/dist/antd.css'
 import {Card,Spin,Input,Button} from 'antd'
 import {createFromIconfontCN} from '@ant-design/icons'
@@ -14,7 +16,19 @@ function Login(){
     const [isLoading,setIsLoading] = useState(false)
     const checkLogin=()=>{
         setIsLoading(true)
-        
+        if(!userName||!password){
+            return false
+        }   
+        axios.post(pub.callApi().checkLogin,{
+            userName,
+            password
+        }).then(res=>{
+            setIsLoading(false)
+            console.log(res)
+        }).catch(e=>{
+            setIsLoading(false)
+            console.log(e.message)
+        })
     }
     return (
         <div className="login-wrapper">

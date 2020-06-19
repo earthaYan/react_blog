@@ -14,7 +14,9 @@ module.exports = appInfo => {
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1592445779971_4938';
-
+  config.security={
+    csrf:{enable:false}
+  }
   // add your middleware config here
   config.middleware = [];
   config.mysql={
@@ -25,7 +27,6 @@ module.exports = appInfo => {
       password:'123456',
       database:'react_blog'
     }
-
   }
   // add your user config here
   const userConfig = {
