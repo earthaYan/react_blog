@@ -1,8 +1,9 @@
 import  React,{useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import pub from '../config/pub'
 import axios from 'axios'
 import 'antd/dist/antd.css'
-import {Card,Spin,Input,Button} from 'antd'
+import {Card,Spin,Input,Button,message} from 'antd'
 import {createFromIconfontCN} from '@ant-design/icons'
 import '../static/css/Login.scss'
 const IconFont = createFromIconfontCN({
@@ -10,25 +11,35 @@ const IconFont = createFromIconfontCN({
         '//at.alicdn.com/t/font_1888734_9tohw3kesp.js'
     ]
 })
-function Login(){
+function Login(props){
     const [userName,setUserName]= useState('')
     const [password,setPassword] =useState('')
     const [isLoading,setIsLoading] = useState(false)
+    const history=useHistory()
     const checkLogin=()=>{
-        // setIsLoading(true)
+       
         if(!userName||!password){
+            message.error('用户名或密码不能为空')
             return false
         }   
+        setIsLoading(true)
         axios.post(pub.callApi().checkLogin,{
-            "userName":"颜",
-            "password":"12344"
+            userName,
+            password
         })
         .then(res=>{
             setIsLoading(false)
-            console.log(res)
+            if(res.data.code==0){
+                localStorage.setItem("openId",res.data.result.openId)
+                // props.history.push('/index')
+                // 使用react-router的hook
+                history.push('/index')
+            }else{
+                message.error('用户名或密码错误')
+            }
         }).catch(e=>{
             setIsLoading(false)
-            console.log(e)
+            console.log(e.message)
         })
     }
     return (
