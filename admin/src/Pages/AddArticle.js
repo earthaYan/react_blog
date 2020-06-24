@@ -1,10 +1,12 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import marked from 'marked'
 import '../static/css/AddArticle.scss'
-import {Row,Col,Input,Select,Button,DatePicker} from 'antd'
+import {Row,Col,Input,Select,Button,DatePicker, message} from 'antd'
+import pub from '../config/pub'
+import axios from 'axios'
 const {Option}=Select
 const {TextArea}=Input
-function AddArticle(){
+function AddArticle(props){
     // 0是新增加，非0是修改
     const [articleId,setArticleId]=useState(0)
     const [articleTitle,setArticleTitle]=useState('')
@@ -18,8 +20,8 @@ function AddArticle(){
     const [createDate,setCreateDate]=useState()
     const [updateDate,setUpdateDate]=useState()
     // 文章类别
-    const [typeInfo,setTypeInfo]=useState()
-    const [selectedType,setSelectedType]=useState()
+    const [typeInfo,setTypeInfo]=useState([])
+    const [selectedType,setSelectedType]=useState('技术')
     marked.setOptions({
         renderer:new marked.Renderer(),
         // github标准的markdown
@@ -47,6 +49,28 @@ function AddArticle(){
             setIntroduceHtml(html)
         }
     }
+    const getTypeInfo=()=>{
+        axios({
+            method:'get',
+            url:pub.callApi().getTypeInfo,
+            withCredentials:true//必须带上这个参数否则会返回401错误
+        }).then(res=>{
+            if(res.data.code===0){
+                setTypeInfo(res.data.result)
+            }
+            else if(res.data.code===401){
+                localStorage.removeItem('openId')
+                message.error('您的登录已过期，请重新登录')
+                props.history.push('/')  
+            }
+        })
+    }
+    const typeSelect=(value)=>{
+        setSelectedType(value)
+    }
+    useEffect(()=>{
+        getTypeInfo()
+    },[])
     return(
         <div className="add-wrapper">
             <Row gutter={5}>
@@ -57,9 +81,12 @@ function AddArticle(){
                             <Input placeholder="文章标题" size="large"/>
                         </Col>
                         <Col span={4}>
-                            <Select defaultValue="1" size="large">
-                                <Option value="1">随笔小篆家回到家</Option>
-                                <Option value="2">技术</Option>
+                            <Select defaultValue={selectedType} size="large" onChange={typeSelect}>
+                                {
+                                    typeInfo.map(type=>{
+                                        return (<Option key={type.id} value={type.Id}>{type.typeName}</Option>)
+                                    })
+                                }
                             </Select>
                         </Col>
                     </Row>

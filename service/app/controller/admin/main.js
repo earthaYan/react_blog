@@ -2,7 +2,6 @@
 const Controller=require('egg').Controller
 class MainController extends Controller{
     async index(){
-        this.ctx.body="12"
     }
     async checkLogin(){
         const {ctx}=this
@@ -16,7 +15,7 @@ class MainController extends Controller{
             // 登录成功
             const  openId=new Date().getTime()
             // 有openId就属于正常登录状态
-            ctx.session.openId={"openId":openId}
+            ctx.session.openId=openId
             ctx.body={
                 code:0,
                 result:{
@@ -31,7 +30,13 @@ class MainController extends Controller{
                 result:null
             }
         }
-        
+    }
+    async getTypeInfo(){
+        const resType=await this.app.mysql.select('type')
+        this.ctx.body={
+            code:0,
+            result:resType
+        }
     }
 }
 module.exports=MainController

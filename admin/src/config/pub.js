@@ -5,6 +5,8 @@ function callApi(){
     const baseUrl="http://127.0.0.1:7001/admin/"
     return {
         checkLogin:`${baseUrl}login`,//登录
+        getTypeInfo:`${baseUrl}getTypeInfo`,//获取文章分类列表
+        
     }
 }
 
