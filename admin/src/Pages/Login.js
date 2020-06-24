@@ -17,15 +17,18 @@ function Login(props){
     const [isLoading,setIsLoading] = useState(false)
     const history=useHistory()
     const checkLogin=()=>{
-       
         if(!userName||!password){
             message.error('用户名或密码不能为空')
             return false
         }   
         setIsLoading(true)
-        axios.post(pub.callApi().checkLogin,{
-            userName,
-            password
+        axios({
+            method:'POST',
+            url:pub.callApi().checkLogin,
+            data:{
+                userName,
+                password
+            }
         })
         .then(res=>{
             setIsLoading(false)
@@ -37,8 +40,8 @@ function Login(props){
             }else{
                 message.error('用户名或密码错误')
             }
-        }).catch(e=>{
-            setIsLoading(false)
+        })
+        .catch(e=>{
             console.log(e.message)
         })
     }

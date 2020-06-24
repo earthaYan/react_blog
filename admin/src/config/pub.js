@@ -1,5 +1,3 @@
-
-
 export default{
     callApi
 }
@@ -9,3 +7,4 @@ function callApi(){
         checkLogin:`${baseUrl}login`,//登录
     }
 }
+
