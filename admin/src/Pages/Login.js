@@ -22,17 +22,13 @@ function Login(props){
             return false
         }   
         setIsLoading(true)
-        axios({
-            method:'POST',
-            url:pub.callApi().checkLogin,
-            data:{
-                userName,
-                password
-            }
+        axios.post(pub.callApi().checkLogin,{
+            userName,
+            password
         })
         .then(res=>{
             setIsLoading(false)
-            if(res.data.code==0){
+            if(res.data.code===0){
                 localStorage.setItem("openId",res.data.result.openId)
                 // props.history.push('/index')
                 // 使用react-router的hook

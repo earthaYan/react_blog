@@ -18,7 +18,7 @@ module.exports = appInfo => {
     csrf:{enable:false}
   }
   config.cors={
-    origin:'http://127.0.0.1:3000',//客户端有设置withCredentials时候不能用*符号
+    origin:'http://localhost:3000',//客户端有设置withCredentials时候不能用*符号
     credentials:true,//允许cookie/session跨域，前后台共享session
     allowMethods:"GET,HEAD,PUT,POST,DELETE,PATCH"
   }

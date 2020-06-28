@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import {Route} from 'react-router-dom'
 import AddArticle from './AddArticle'
+import ArticleList from './ArticleList'
 import { Layout, Menu, Breadcrumb } from 'antd';
 import {
   DesktopOutlined,
@@ -12,10 +13,17 @@ import '../static/css/AdminIndex.scss'
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-function AdminIndex(){
+function AdminIndex(props){
     const [collapsed,setCollapsed]=useState(false)
     const onCollapse=(collapsed)=>{
         setCollapsed(collapsed)
+    }
+    const clickArticleManager=(e)=>{
+      if(e.key==='addArticle'){
+        props.history.push('/index/add')
+      }else{
+        props.history.push('/index/list/')
+      }
     }
     return(
       <Layout style={{ minHeight: '100vh' }}>
@@ -28,9 +36,9 @@ function AdminIndex(){
             <Menu.Item key="2" icon={<DesktopOutlined />}>
               文章列表
             </Menu.Item>
-            <SubMenu key="sub1" icon={<UserOutlined />} title="文章管理">
-              <Menu.Item key="3">分类1</Menu.Item>
-              <Menu.Item key="4">分类2</Menu.Item>
+            <SubMenu key="sub1" icon={<UserOutlined />} title="文章管理" onClick={clickArticleManager}>
+              <Menu.Item key="addArticle">添加文章</Menu.Item>
+              <Menu.Item key="articleList">文章列表</Menu.Item>
               <Menu.Item key="5">分类3</Menu.Item>
             </SubMenu>
             <Menu.Item key="9" icon={<FileOutlined />}>
@@ -48,6 +56,8 @@ function AdminIndex(){
             <div className="site-layout-background" style={{ padding: 24,backgroundColor:'#fff', minHeight: 360 }}>
               <div>
                 <Route path='/index/' exact component={AddArticle}/>
+                <Route path='/index/add/'  component={AddArticle}/>
+                <Route path='/index/list/' exact component={ArticleList}/>
               </div>
             </div>
           </Content>

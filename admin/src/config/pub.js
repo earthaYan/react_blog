@@ -6,7 +6,9 @@ function callApi(){
     return {
         checkLogin:`${baseUrl}login`,//登录
         getTypeInfo:`${baseUrl}getTypeInfo`,//获取文章分类列表
-        
+        addArticle:`${baseUrl}addArticle`,//添加文章
+        updateArticle:`${baseUrl}updateArticle`,//修改文章
+        getArticleList:`${baseUrl}getArticleList`,//文章列表
     }
 }
 

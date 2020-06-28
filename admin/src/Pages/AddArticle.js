@@ -17,11 +17,11 @@ function AddArticle(props){
     const [introduce,setIntroduce]=useState('')
     const [introduceHtml,setIntroduceHtml]=useState('简介内容')
     // 日期
-    const [createDate,setCreateDate]=useState()
-    const [updateDate,setUpdateDate]=useState()
+    const [createDate,setCreateDate]=useState('')
+    const [updateDate,setUpdateDate]=useState('')
     // 文章类别
     const [typeInfo,setTypeInfo]=useState([])
-    const [selectedType,setSelectedType]=useState('技术')
+    const [selectedType,setSelectedType]=useState(1)
     marked.setOptions({
         renderer:new marked.Renderer(),
         // github标准的markdown
@@ -50,23 +50,53 @@ function AddArticle(props){
         }
     }
     const getTypeInfo=()=>{
-        axios({
-            method:'get',
-            url:pub.callApi().getTypeInfo,
-            withCredentials:true//必须带上这个参数否则会返回401错误
-        }).then(res=>{
+        //必须带上这个参数否则会返回401错误
+        axios.defaults.withCredentials=true
+        axios.get(pub.callApi().getTypeInfo).then(res=>{
             if(res.data.code===0){
                 setTypeInfo(res.data.result)
             }
             else if(res.data.code===401){
                 localStorage.removeItem('openId')
                 message.error('您的登录已过期，请重新登录')
-                props.history.push('/')  
+                props.history.push('/login')  
             }
         })
     }
-    const typeSelect=(value)=>{
-        setSelectedType(value)
+    const saveArticle=()=>{
+        if(!articleTitle||!createDate||!selectedType){
+            message.error('文章信息不完整，无法保存')
+            return false
+        }
+        let articleInfo={
+            typeId:selectedType,
+            title:articleTitle,
+            articleContent:articleContent,
+            introduce:introduce,
+            addTime:new Date(createDate.replace('-','/')).getTime()/1000
+        }
+        axios.defaults.withCredentials=true
+        if(articleId===0){
+            // 增加
+            articleInfo.viewCount=0
+            // debugger
+            axios.post(pub.callApi().addArticle,articleInfo).then(res=>{
+                if(res.data.insertSuccess){
+                    setArticleId(res.data.insertId)
+                    message.success('文章添加成功')
+                }
+            }).catch(err=>{
+                console.log(err.message)
+            })
+        }else{
+            // 修改
+            articleInfo.id=articleId
+            axios.post(pub.callApi().updateArticle,articleInfo).then(res=>{
+                if(res.data.updateSuccess){
+                    message.success('文章修改成功')
+                }
+            })
+        }
     }
     useEffect(()=>{
         getTypeInfo()
@@ -78,13 +108,13 @@ function AddArticle(props){
                 <Col   span={18}>
                     <Row gutter={10} className="left-top">
                         <Col span={20}>
-                            <Input placeholder="文章标题" size="large"/>
+                            <Input placeholder="文章标题" size="large"  onChange={(e)=>{setArticleTitle(e.target.value)}}/>
                         </Col>
                         <Col span={4}>
-                            <Select defaultValue={selectedType} size="large" onChange={typeSelect}>
+                            <Select placeholder="请选择类型"   size="large" onChange={(value)=>{setSelectedType(value)}}>
                                 {
-                                    typeInfo.map(type=>{
-                                        return (<Option key={type.id} value={type.Id}>{type.typeName}</Option>)
+                                    typeInfo.map((type,index)=>{
+                                        return (<Option key={index} value={type.Id}>{type.typeName}</Option>)
                                     })
                                 }
                             </Select>
@@ -107,7 +137,7 @@ function AddArticle(props){
                 <Col  span={6} className="right-content">
                     <Row className="btnGroup">
                         <Col span={11}>
-                            <Button size="large">暂存文章</Button>
+                            <Button size="large" onClick={saveArticle}>暂存文章</Button>
                         </Col>
                         <Col span={11}>
                             <Button type="primary" size="large">发布文章</Button>
@@ -127,10 +157,10 @@ function AddArticle(props){
                     </Row>
                     <Row gutter={4}>
                         <Col span={12}>
-                            <DatePicker placeholder="发布日期"/>
+                            <DatePicker placeholder="发布日期" onChange={(date,dateString)=>{setCreateDate(dateString)}}/>
                         </Col>
                         <Col span={12}>
-                            <DatePicker placeholder="修改日期"/>
+                            <DatePicker placeholder="修改日期" onChange={(date,dateString)=>{setUpdateDate(dateString)}}/>
                         </Col>
                     </Row>
                 </Col>
