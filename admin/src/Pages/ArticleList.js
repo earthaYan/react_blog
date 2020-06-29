@@ -1,8 +1,9 @@
 import React,{useState,useEffect} from 'react'
-import {List,Row,Col,message, Button,Space} from 'antd'
+import {List,Row,Col,Modal, Button,Space, message} from 'antd'
 import '../static/css/ArticleList.scss'
 import pub from '../config/pub'
 import axios from 'axios'
+const { confirm } = Modal
 
 function ArticleList(props){
     const [list,setList]=useState([])
@@ -13,6 +14,30 @@ function ArticleList(props){
                 setList(res.data.results.articles)
             }
         })
+    }
+    const delArticle=(id)=>{
+        confirm({
+            title:'确认删除该篇文章？',
+            content:'无法恢复',
+            okText: '确定',
+            cancelText: '取消',
+            type: 'warning',
+            onOk(){
+                axios.post(pub.callApi().delArticle+id,{
+                    withCredentials:true
+                }).then(res=>{
+                    if(res.data.idDeleted){
+                        message.success('删除成功')
+                        getArticleList()
+                    }else{
+                        message.error('该文章id不存在')
+                    }
+                })
+            }
+        })
+    }
+    const editArticle=(id)=>{
+        props.history.push('/index/add/'+id)
     }
     useEffect(()=>{
         // 数组为空表示只进行一次
@@ -41,8 +66,8 @@ function ArticleList(props){
                            <Col span={4}>{item.addTime}</Col>
                            <Col span={4}>
                                <Space>
-                                   <Button type="primary">修改</Button>
-                                   <Button type="danger">删除</Button>
+                                   <Button type="primary" onClick={()=>{editArticle(item.id)}}>修改</Button>
+                                   <Button type="danger" onClick={()=>{delArticle(item.id)}}>删除</Button>
                                </Space>
                            </Col>
                        </Row> 

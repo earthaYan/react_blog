@@ -69,5 +69,36 @@ class MainController extends Controller{
             }
         }
     }
+    async delArticle(){
+        let id=this.ctx.params.id
+        if(id){
+            const res=await this.app.mysql.delete('article',{
+                id
+            })
+            const del=res.affectedRows===1
+            this.ctx.body={
+                code:0,
+                idDeleted:del
+            }
+        }else{
+            this.ctx.body={
+                code:1000,
+                message:'an id is required'
+            }
+        }
+    }
+    async getArticleById(){
+        let id=this.ctx.params.id
+        if(id){
+            const sql=`SELECT article.id AS id,article.title AS title,article.addTime AS addTime,article.updateTime AS updateTime,article.viewCount,article.articleContent as content,article.introduce as introduce,article.typeId AS typeId,type.typeName AS typeName FROM article LEFT JOIN TYPE ON article.typeId=type.id WHERE article.id=${id}`
+            const results=await this.app.mysql.query(sql)
+            this.ctx.body=results[0]
+        }else{
+            this.ctx.body={
+                code:404,
+                message:'id is required'
+            }
+        }
+    }
 }
 module.exports=MainController

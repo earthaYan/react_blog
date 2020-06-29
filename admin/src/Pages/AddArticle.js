@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react'
+import {useParams} from 'react-router-dom'
 import marked from 'marked'
 import '../static/css/AddArticle.scss'
 import {Row,Col,Input,Select,Button,DatePicker, message} from 'antd'
@@ -63,6 +64,24 @@ function AddArticle(props){
             }
         })
     }
+    const getDetail=(id)=>{
+        axios.get(pub.callApi().getArticleById+id,{
+            withCredentials:true
+        }).then(res=>{
+            const obj=res.data
+            console.log(obj)
+            setArticleTitle(obj.title)
+            setArticleContent(obj.content)
+            let show_html=marked(obj.content)
+            setShowHtml(show_html)
+            setIntroduce(obj.introduce)
+            let introduce_html=marked(obj.introduce)
+            setIntroduceHtml(introduce_html)
+            // setCreateDate(obj.addTime)
+            // setUpdateDate(obj.updateTime)
+            setSelectedType(obj.typeId)
+        })
+    }
     const saveArticle=()=>{
         if(!articleTitle||!createDate||!selectedType){
             message.error('文章信息不完整，无法保存')
@@ -79,7 +98,6 @@ function AddArticle(props){
         if(articleId===0){
             // 增加
             articleInfo.viewCount=0
-            // debugger
             axios.post(pub.callApi().addArticle,articleInfo).then(res=>{
                 if(res.data.insertSuccess){
                     setArticleId(res.data.insertId)
@@ -100,6 +118,12 @@ function AddArticle(props){
     }
     useEffect(()=>{
         getTypeInfo()
+        let tmpId=props.match.params.id
+        if(tmpId){
+            setArticleId(tmpId)
+            getDetail(tmpId)
+        }
+
     },[])
     return(
         <div className="add-wrapper">
@@ -108,10 +132,10 @@ function AddArticle(props){
                 <Col   span={18}>
                     <Row gutter={10} className="left-top">
                         <Col span={20}>
-                            <Input placeholder="文章标题" size="large"  onChange={(e)=>{setArticleTitle(e.target.value)}}/>
+                            <Input placeholder="文章标题" size="large" value={articleTitle}  onChange={(e)=>{setArticleTitle(e.target.value)}}/>
                         </Col>
                         <Col span={4}>
-                            <Select placeholder="请选择类型"   size="large" onChange={(value)=>{setSelectedType(value)}}>
+                            <Select placeholder="请选择类型" defaultValue={selectedType}   size="large" onChange={(value)=>{setSelectedType(value)}}>
                                 {
                                     typeInfo.map((type,index)=>{
                                         return (<Option key={index} value={type.Id}>{type.typeName}</Option>)
@@ -123,7 +147,7 @@ function AddArticle(props){
                     <Row gutter={10}>
                         <Col span={12}>
                             <TextArea className="markdown-content" 
-                                rows={35} placeholder="文字内容" onChange={(e)=>{changeContent(e,'show')}}/>
+                                rows={35} placeholder="文字内容" value={articleContent} onChange={(e)=>{changeContent(e,'show')}}/>
                             <div className="introduce-html"></div>
                         </Col>
                         <Col span={12}>
@@ -140,13 +164,13 @@ function AddArticle(props){
                             <Button size="large" onClick={saveArticle}>暂存文章</Button>
                         </Col>
                         <Col span={11}>
-                            <Button type="primary" size="large">发布文章</Button>
+                            <Button type="primary" size="large"  onClick={saveArticle}>发布文章</Button>
                         </Col>
                     </Row>
                     {/* 文章简介 */}
                     <Row>
                         <Col span={24}>
-                            <TextArea placeholder="文章简介" rows={4} onChange={(e)=>changeContent(e,'introduce')}/>
+                            <TextArea placeholder="文章简介" value={introduce} rows={4} onChange={(e)=>changeContent(e,'introduce')}/>
                         </Col>
                     </Row>
                     <Row>
@@ -157,10 +181,10 @@ function AddArticle(props){
                     </Row>
                     <Row gutter={4}>
                         <Col span={12}>
-                            <DatePicker placeholder="发布日期" onChange={(date,dateString)=>{setCreateDate(dateString)}}/>
+                            <DatePicker placeholder="发布日期"  onChange={(date,dateString)=>{setCreateDate(dateString)}}/>
                         </Col>
                         <Col span={12}>
-                            <DatePicker placeholder="修改日期" onChange={(date,dateString)=>{setUpdateDate(dateString)}}/>
+                            <DatePicker placeholder="修改日期"  onChange={(date,dateString)=>{setUpdateDate(dateString)}}/>
                         </Col>
                     </Row>
                 </Col>
