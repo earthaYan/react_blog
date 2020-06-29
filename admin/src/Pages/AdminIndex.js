@@ -33,13 +33,9 @@ function AdminIndex(props){
             <Menu.Item key="1" icon={<PieChartOutlined />}>
               工作台
             </Menu.Item>
-            <Menu.Item key="2" icon={<DesktopOutlined />}>
-              文章列表
-            </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="文章管理" onClick={clickArticleManager}>
               <Menu.Item key="addArticle">添加文章</Menu.Item>
               <Menu.Item key="articleList">文章列表</Menu.Item>
-              <Menu.Item key="5">分类3</Menu.Item>
             </SubMenu>
             <Menu.Item key="9" icon={<FileOutlined />}>
                 留言管理
@@ -62,7 +58,7 @@ function AdminIndex(props){
               </div>
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+          <Footer style={{ textAlign: 'center' }}>Ant Design+react+mysql ©2020 Created by 月月颜</Footer>
         </Layout>
       </Layout>
     )

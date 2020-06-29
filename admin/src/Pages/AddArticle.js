@@ -5,6 +5,7 @@ import '../static/css/AddArticle.scss'
 import {Row,Col,Input,Select,Button,DatePicker, message} from 'antd'
 import pub from '../config/pub'
 import axios from 'axios'
+import moment from 'moment'
 const {Option}=Select
 const {TextArea}=Input
 function AddArticle(props){
@@ -77,8 +78,8 @@ function AddArticle(props){
             setIntroduce(obj.introduce)
             let introduce_html=marked(obj.introduce)
             setIntroduceHtml(introduce_html)
-            // setCreateDate(obj.addTime)
-            // setUpdateDate(obj.updateTime)
+            setCreateDate(obj.addTime)
+            setUpdateDate(obj.updateTime)
             setSelectedType(obj.typeId)
         })
     }
@@ -135,7 +136,7 @@ function AddArticle(props){
                             <Input placeholder="文章标题" size="large" value={articleTitle}  onChange={(e)=>{setArticleTitle(e.target.value)}}/>
                         </Col>
                         <Col span={4}>
-                            <Select placeholder="请选择类型" defaultValue={selectedType}   size="large" onChange={(value)=>{setSelectedType(value)}}>
+                            <Select placeholder="请选择类型" value={selectedType?selectedType:''}  size="large" onChange={value=>{setSelectedType(value)}}>
                                 {
                                     typeInfo.map((type,index)=>{
                                         return (<Option key={index} value={type.Id}>{type.typeName}</Option>)
@@ -181,10 +182,10 @@ function AddArticle(props){
                     </Row>
                     <Row gutter={4}>
                         <Col span={12}>
-                            <DatePicker placeholder="发布日期"  onChange={(date,dateString)=>{setCreateDate(dateString)}}/>
+                            <DatePicker placeholder="发布日期" value={createDate?moment(createDate,"YYYY-MM-DD"):''} onChange={(date,dateString)=>{setCreateDate(dateString)}}/>
                         </Col>
                         <Col span={12}>
-                            <DatePicker placeholder="修改日期"  onChange={(date,dateString)=>{setUpdateDate(dateString)}}/>
+                            <DatePicker placeholder="修改日期"   onChange={(date,dateString)=>{setUpdateDate(dateString)}}/>
                         </Col>
                     </Row>
                 </Col>
