@@ -103,6 +103,7 @@ function AddArticle(props){
                 if(res.data.insertSuccess){
                     setArticleId(res.data.insertId)
                     message.success('文章添加成功')
+                    props.history.goBack()
                 }
             }).catch(err=>{
                 console.log(err.message)
@@ -113,6 +114,7 @@ function AddArticle(props){
             axios.post(pub.callApi().updateArticle,articleInfo).then(res=>{
                 if(res.data.updateSuccess){
                     message.success('文章修改成功')
+                    props.history.goBack()
                 }
             })
         }

@@ -30,15 +30,15 @@ function AdminIndex(props){
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
           <div className="logo">logo</div>
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" icon={<PieChartOutlined />}>
+            {/* <Menu.Item key="1" icon={<PieChartOutlined />}>
               工作台
-            </Menu.Item>
+            </Menu.Item> */}
             <SubMenu key="sub1" icon={<UserOutlined />} title="文章管理" onClick={clickArticleManager}>
               <Menu.Item key="addArticle">添加文章</Menu.Item>
               <Menu.Item key="articleList">文章列表</Menu.Item>
             </SubMenu>
             <Menu.Item key="9" icon={<FileOutlined />}>
-                留言管理
+              留言管理
             </Menu.Item>
           </Menu>
         </Sider>
