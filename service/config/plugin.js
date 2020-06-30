@@ -13,5 +13,9 @@ module.exports = {
   cors:{
     enable:true,
     package:'egg-cors'
+  },
+  onerror:{
+    enable:true,
+    package:'egg-onerror'
   }
 };

@@ -33,6 +33,12 @@ module.exports = appInfo => {
       database:'react_blog'
     }
   }
+  config.onerror={
+    all(err, ctx){
+      ctx.body = err;
+      ctx.status = 500;
+    }
+  }
   config.bodyParser={
     
   }
