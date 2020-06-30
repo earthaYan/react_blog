@@ -57,7 +57,7 @@ class MainController extends Controller{
         }
     }
     async getArticleList(){
-        const sql=`SELECT article.id AS id,article.title AS title,FROM_UNIXTIME(article.addTime,'%Y-%m-%d') AS addTime,article.viewCount,type.typeName AS typeName FROM article LEFT JOIN TYPE ON article.typeId=type.id ORDER BY article.id DESC`
+        const sql=`SELECT article.id AS id,article.title AS title,FROM_UNIXTIME(article.addTime,'%Y-%m-%d') AS addTime,article.viewCount,type.typeName AS typeName FROM article LEFT JOIN type ON article.typeId=type.id ORDER BY article.id DESC`
         let results=await this.app.mysql.query(sql)
         if(results.length){
             this.ctx.body={
@@ -90,7 +90,7 @@ class MainController extends Controller{
     async getArticleById(){
         let id=this.ctx.params.id
         if(id){
-            const sql=`SELECT article.id AS id,article.title AS title,FROM_UNIXTIME(article.addTime,'%Y-%m-%d') AS addTime,FROM_UNIXTIME(article.updateTime ,'%Y-%m-%d') AS updateTime,article.viewCount,article.articleContent as content,article.introduce as introduce,article.typeId AS typeId,type.typeName AS typeName FROM article LEFT JOIN TYPE ON article.typeId=type.id WHERE article.id=${id}`
+            const sql=`SELECT article.id AS id,article.title AS title,FROM_UNIXTIME(article.addTime,'%Y-%m-%d') AS addTime,FROM_UNIXTIME(article.updateTime ,'%Y-%m-%d') AS updateTime,article.viewCount,article.articleContent as content,article.introduce as introduce,article.typeId AS typeId,type.typeName AS typeName FROM article LEFT JOIN type ON article.typeId=type.id WHERE article.id=${id}`
             const results=await this.app.mysql.query(sql)
             this.ctx.body=results[0]
         }else{

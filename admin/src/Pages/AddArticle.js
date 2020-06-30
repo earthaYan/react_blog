@@ -70,7 +70,6 @@ function AddArticle(props){
             withCredentials:true
         }).then(res=>{
             const obj=res.data
-            console.log(obj)
             setArticleTitle(obj.title)
             setArticleContent(obj.content)
             let show_html=marked(obj.content)
@@ -103,7 +102,7 @@ function AddArticle(props){
                 if(res.data.insertSuccess){
                     setArticleId(res.data.insertId)
                     message.success('文章添加成功')
-                    props.history.goBack()
+                    props.history.push('/index/list')
                 }
             }).catch(err=>{
                 console.log(err.message)

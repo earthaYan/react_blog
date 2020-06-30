@@ -26,16 +26,17 @@ module.exports = appInfo => {
   config.middleware = [];
   config.mysql={
     client:{
-      host:'localhost',
+      host:'47.254.90.136',
       port:'3306',
       user:'root',
-      password:'123456',
+      password:'root',
       database:'react_blog'
     }
   }
   config.bodyParser={
     
   }
+  
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
